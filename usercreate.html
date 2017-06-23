@@ -1,0 +1,285 @@
+ <section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+<h3 style="color:black;margin-top:10px;">User Create</h3>
+<div class="col-md-8">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11">
+                <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Create User</button>
+                <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="userMessage">
+                    <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">x</a>
+                    <h4>{{userMessage}}</h4>
+                </div>
+                <div class="alert alert-danger fade in myAlert" style="margin-top:5%" ng-if="userDangerMessage">
+                    <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">x</a>
+                    <h4>{{userDangerMessage}}</h4>
+                </div>
+                 <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="userupdatedMessage">
+                    <a class="close" href="#" data-dismiss="alert"  ng-click="clickedAlert()">x</a>
+                    <h4>{{userupdatedMessage}}</h4>
+                </div>
+                <div class="alert alert-danger fade in myAlert" style="margin-top:5%" ng-if="userupdatedDangerMessage">
+                    <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">x</a>
+                    <h4>{{userupdatedDangerMessage}}</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered myTable" style="margin-top:5%">
+                        <tr class="text-center">
+                            <th>Index</th>
+                            <th>Department</th>
+                            <th>User Name</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Role</th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+                        <tbody ng-init="loadUser()">
+                        	<tr ng-repeat="user in prevUsers">
+                        		<td>{{$index+1}}</td>
+                        		<td>{{user.department}}</td>
+                        		<td>{{user.userName}}</td>
+                        		<td>{{user.firstName}}</td>
+                        		<td>{{user.lastName}}</td>
+                        		<td>{{user.role}}</td>
+                        		<td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDelete(user)" >Delete</button></td>
+                                <td>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectcreateuser(user)">Edit</button>
+                                </td>
+                        	</tr>
+                            <tr ng-repeat="createuser in usernew">
+                                <td>{{$index+1+prevUsers.length}}</td>
+                                <td>{{createuser.department}}</td>
+                                <td>{{createuser.userName}}</td>
+                                <td>{{createuser.firstName}}</td>
+                                <td>{{createuser.lastName}}</td>
+                                <td>{{createuser.role}}</td>
+                                <td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDelete(user)">Delete</button></td>
+                                <td>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectcreateuser(createuser)">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal-->
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" >
+                <div class="modal-header">
+               
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Create User</h4>
+                     <!--  messages -->
+                     <div   ng-hide="uwarn" >
+                 
+                   		 <h4 class="errmsg" ng-model="userwarn">{{userwarn}}</h4>
+                	</div>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal" name="theForm" novalidate>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm.department.$invalid && !theForm.department.$pristine }">
+                                <label class="col-sm-2 new control-label" for="department">*Department</label>
+                                <div class="col-sm-3">
+                                    <input id="department" ng-model="createusernew.department" ng-pattern="/[aA-zZ\s]$/" ng-minlength="3" ng-maxlength="8" name="department" type="text" placeholder="Department" class="form-control input-md" required="required">
+                                     <p ng-show="theForm.department.$error.minlength" class="help-block">User Name is too short.</p>
+                                     <p ng-show="theForm.department.$error.maxlength" class="help-block">User Name is too long.</p>
+                                </div>
+                                
+                                 
+                            </div>
+                           
+                            <!-- Text input-->
+                            <div class="form-group"  ng-class="{ 'has-error' : theForm.username.$invalid && !theForm.username.$pristine }">
+                                <label class="col-sm-2 new control-label" for="createusername" >*User Name</label>
+                                <div class="col-sm-3">
+                                    <input id="username" ng-model="createusernew.userName" ng-blur="checkUser()" ng-minlength="3" ng-maxlength="8" name="username" type="text" placeholder="User Name" class="form-control input-md" required="required">
+                                     <p ng-show="theForm.username.$error.minlength" class="help-block">User Name is too short.</p>
+                                     <p ng-show="theForm.username.$error.maxlength" class="help-block">User Name is too long.</p>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm.firstname.$invalid && !theForm.firstname.$pristine }">
+                                <label class="col-sm-2 new control-label" for="firstname">*First Name</label>
+                                <div class="col-sm-3">
+                                    <input id="firstname" ng-model="createusernew.firstName" ng-minlength="3" ng-maxlength="8" name="firstname" type="text" placeholder="First Name" class="form-control input-md" required="required">
+                                    <p ng-show="theForm.firstname.$error.minlength" class="help-block">First Name is too short.</p>
+                                     <p ng-show="theForm.firstname.$error.maxlength" class="help-block">First Name is too long.</p>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm.lastname.$invalid && !theForm.lastname.$pristine }">
+                                <label class="col-sm-2 new control-label" required for="lastname">*Last Name</label>
+                                <div class="col-sm-3">
+                                    <input id="lastname" ng-model="createusernew.lastName" ng-minlength="3" ng-maxlength="8" name="lastname" type="text" placeholder="Last Name" class="form-control input-md" required="required">
+                                    <p ng-show="theForm.lastname.$error.minlength" class="help-block">Last Name is too short.</p>
+                                     <p ng-show="theForm.lastname.$error.maxlength" class="help-block">Last Name is too long.</p>
+                                </div>
+                            </div>
+                            
+                            
+                            <!-- Select Basic -->
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label" for="role">*Role</label>
+                                <div class="col-sm-3">
+                                  <select id="role" ng-model="createusernew.role" name="role" class="form-control">
+                                   <option value="" disabled selected hidden>Choose Option</option>
+                                       <option value="Admin">Admin</option>
+                                      <option value="User">User</option>
+                                 </select>
+                               </div>
+                              </div>
+                            
+                            
+                            <!-- Password input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm.password.$invalid && !theForm.password.$pristine }">
+                                <label class="col-sm-2 new control-label" required for="password">*Password</label>
+                                <div class="col-sm-3">
+                                    <input id="password" ng-model="createusernew.password" name="password" type="password" placeholder="Password" ng-pattern="createusernew.retypepassword" class="form-control input-md" required="required">
+                                    <p ng-show="theForm.password.$error.pattern" class="help-block">Please match the password.</p>
+                                     
+                                </div>
+                            </div>
+                            <!-- Password input-->
+                            <div class="form-group">
+                                <label class="col-sm-2 new control-label" required for="retypepassword">*Retype Password </label>
+                                <div class="col-sm-3">
+                                    <input id="retypepassword" ng-model="createusernew.retypepassword" name="retypepassword" type="password" placeholder="Retype Password " class="form-control input-md" required="required">
+                                    
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-disabled="theForm.$invalid || !uwarn" ng-click="userSubmit(theForm.$valid)"  >Save</button></a> 
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal" name="theForm1">
+                         <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm1.department.$invalid && !theForm1.department.$pristine }">
+                                <label class="col-sm-2 new control-label" for="department">*Department</label>
+                                <div class="col-sm-3">
+                                    <input id="department" ng-model="clickedcreateuser.department" ng-minlength="3" ng-maxlength="8" name="department" type="text" placeholder="Department" class="form-control input-md" required="">
+                                     <p ng-show="theForm1.department.$error.minlength" class="help-block">User Name is too short.</p>
+                                     <p ng-show="theForm1.department.$error.maxlength" class="help-block">User Name is too long.</p>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm1.username.$invalid && !theForm1.username.$pristine }">
+                                <label class="col-sm-2 new control-label" for="createusername">*User Name</label>
+                                <div class="col-sm-3">
+                                    <input id="username" readonly ng-model="clickedcreateuser.userName" ng-minlength="3" ng-maxlength="8" name="username" type="text" placeholder="User Name" class="form-control input-md" required="">
+                                    <p ng-show="theForm1.username.$error.minlength" class="help-block">User Name is too short.</p>
+                                     <p ng-show="theForm1.username.$error.maxlength" class="help-block">User Name is too long.</p>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm1.firstname.$invalid && !theForm1.firstname.$pristine }">
+                                <label class="col-sm-2 new control-label" for="firstname">*First Name</label>
+                                <div class="col-sm-3">
+                                    <input id="firstname" ng-model="clickedcreateuser.firstName" ng-minlength="3" ng-maxlength="8" name="firstname" type="text" placeholder="First Name" class="form-control input-md" required="">
+                                      <p ng-show="theForm1.firstname.$error.minlength" class="help-block">First Name is too short.</p>
+                                     <p ng-show="theForm1.firstname.$error.maxlength" class="help-block">First Name is too long.</p>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm1.lastname.$invalid && !theForm1.lastname.$pristine }">
+                                <label class="col-sm-2 new control-label" required for="lastname">*Last Name</label>
+                                <div class="col-sm-3">
+                                    <input id="lastname" ng-model="clickedcreateuser.lastName" ng-minlength="3" ng-maxlength="8" name="lastname" type="text" placeholder="Last Name" class="form-control input-md" required="">
+                                      <p ng-show="theForm1.lastname.$error.minlength" class="help-block">Last Name is too short.</p>
+                                     <p ng-show="theForm1.lastname.$error.maxlength" class="help-block">Last Name is too long.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Select Basic -->
+                              <div class="form-group">
+                                  <label class="col-sm-2 control-label" for="role">*Role</label>
+                                <div class="col-sm-3">
+                                  <select id="role" ng-model="clickedcreateuser.role" name="role" class="form-control">
+                                   <option value="" disabled selected hidden>Choose Option</option>
+                                       <option value="Admin">Admin</option>
+                                      <option value="User">User</option>
+                                 </select>
+                               </div>
+                              </div>
+                            
+                            
+                            
+                            <!-- Password input-->
+                            <div class="form-group" ng-class="{ 'has-error' : theForm1.password.$invalid && !theForm1.password.$pristine }">
+                                <label class="col-sm-2 new control-label" required for="password">*Password</label>
+                                <div class="col-sm-3">
+                                    <input id="password" ng-model="clickedcreateuser.password" ng-pattern="clickedcreateuser.retypepassword"  name="password" type="password" placeholder="Password" class="form-control input-md" required="">
+                                    <p ng-show="theForm1.lastname.$error.pattern" class="help-block">Please match the password.</p>
+                                </div>
+                            </div>
+                          <!-- Password input-->
+                            <div class="form-group">
+                                <label class="col-sm-2 new control-label" required for="retypepassword">*Retype Password </label>
+                                <div class="col-sm-3">
+                                    <input id="retypepassword" ng-value="clickedcreateuser.password" ng-model="clickedcreateuser.retypepassword" name="retypepassword" type="password" placeholder="Retype Password " class="form-control input-md" required="required">
+                                    
+                                </div>
+                            </div>
+                        
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal">  <button class="btn btn-success" type="submit" ng-disabled="theForm1.$invalid" ng-click="userupdateSubmit(theForm1.$valid)" >Save</button> </a>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Are you sure to delete <span>{{clickedcreateuser.userName}}</span>????</h3>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="submit" ng-click="deleteUser()" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+ </div>
+  </section>

@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h3 class="modal-title">{{$ctrl.key}}</h3>
+</div>
+
+<div class="modal-body">
+     <div class="well" ng-hide="showErrormessage">
+               {{errormessage}}
+     </div>
+    <form name="restForm" class="form-horizontal" novalidate>
+        <div class="form-group">
+        <label class="col-sm-2 control-label">Configuration</label>
+        <div class="col-sm-10">
+            <div class="well">
+               <p></p>
+                <textarea class="form-control" rows="7"  ng-model="configuration" required></textarea>
+            </div>
+
+        </div>
+        </div>
+        <hr>
+
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-disabled="restForm.$invalid" ng-click="ok()">Update</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

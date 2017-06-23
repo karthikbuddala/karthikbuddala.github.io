@@ -1,0 +1,312 @@
+<section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+ <h3 style="color:black;margin-top:10px;">List</h3>
+            <div class="col-md-8" >
+				
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-10">
+                           
+                            <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Add List</button>
+                            <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="listMessage">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">X</a>
+                                <h4>{{listMessage}}</h4>
+                            </div>
+                            <div class="alert alert-danger fade in myAlert" ng-if="listDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{listDangerMessage}}</h4>
+                            </div>
+                             <div class="alert alert-warning fade in myAlert" ng-if="listupdateMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{listupdateMessage}}</h4>
+                            </div>
+                            <div class="alert alert-danger fade in myAlert" ng-if="listupdateDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{listupdateDangerMessage}}</h4>
+                            </div>
+                            <table class="table table-bordered myTable" style="margin-top:5%">
+                                <tr class="text-center">
+                                    <th>Index</th>
+                                    <th>List Name</th>
+                                    <th>Description</th>
+                              
+                                    <th></th>
+                                    <th></th>
+
+
+
+                                </tr>
+                                <tbody ng-table="listTable" ng-init="loadList()" >
+                                    <tr ng-repeat="list in prevList">
+                                        <td>{{$index+1}}</td>
+                                        <td><a href="" data-toggle="modal" class="news anch" data-target="#myModal" ng-click="loadOneList(list)">{{list.listName}}</a></td>
+                                        <td>{{list.description}}</td>
+                                     
+                                        <td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletelist(list)">Delete</button></td>
+                                        <td>
+                                            <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectlist(list)">Edit</button>
+                                        </td>
+
+
+                                    </tr>
+                                     <tr ng-repeat="list in lists">
+                                        <td>{{$index+1+prevList.length}}</td>
+                                        <td><a href=""  data-toggle="modal" data-target="#myModal" ng-click="loadOneList(list)" >{{list.listName}}</a></td>
+                                        <td>{{list.description}}</td>
+                                      
+                                        <td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletelist(list)">Delete</button></td>
+                                        <td>
+                                            <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectlist(list)">Edit</button>
+                                        </td>
+
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+              </div>
+    </div>
+
+    <!--label & value Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Labels & Values</h4>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+           <table class="table table-bordered myTable" >
+                                <tr class="text-center">
+                                    <th style="color:black;">Index</th>
+                                    <th style="color:black;">Label</th>
+                                    <th style="color:black;">Value</th>
+                              
+
+
+
+                                </tr>
+                                <tbody>
+                                   
+                                   <tr ng-repeat="fields in labelArr[0]['fieldsList']">
+                                   		<td>{{$index+1}}</td>
+                                   		<td>{{fields.label}}</td>
+                                   		<td>{{fields.value}}</td>
+                                   </tr>
+                                   
+                                </tbody>
+              </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+                <!-- Add Modal-->
+                <div class="modal fade" id="addModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">X</button>
+                                <h4 class="modal-title">Add List</h4>
+                                <!-- warn messages -->
+                                <div  ng-hide="lwarn" >
+                 							<h4 class="errmsg">{{listwarn}}</h4>
+                				</div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form class="form-horizontal" name="list">
+                                        <!-- Text input-->
+                                        <div class="form-group" ng-class="{ 'has-error' : list.listname.$invalid && !list.listname.$pristine }">
+                                            <label class="col-sm-2 new control-label" for="listname">List Name</label>
+                                            <div class="col-sm-3">
+                                                <input id="listname" name="listname" required="required" ng-minlength="3" ng-maxlength="8" ng-model="formList.listName" ng-blur="checkListName()" type="text" placeholder="List Name" class="form-control input-md" required="">
+                                                <p ng-show="list.listname.$error.minlength" class="help-block">Label is too short.</p>
+                                                <p ng-show="list.listname.$error.maxlength" class="help-block">Label Type is too long.</p>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Textarea -->
+                                        <div class="form-group" ng-class="{ 'has-error' : list.description.$invalid && !list.description.$pristine }">
+                                            <label class="col-sm-2 new control-label" for="description">Description</label>
+                                            <div class="col-sm-3">
+                                                <textarea class="form-control" name="description" required="required" ng-minlength="3" ng-maxlength="150" ng-model="formList.description" id="description" name="description">Description</textarea>
+                                                <p ng-show="list.description.$error.minlength" class="help-block">Label is too short.</p>
+                                                <p ng-show="list.description.$error.maxlength" class="help-block">Label Type is too long.</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 new control-label" for="description"></label>
+                                                <div class="col-sm-3">
+                                                    <div >
+                                     
+                                                            <table class="table table-striped table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                      
+                                                                        <th class="display">Label</th>
+                                                                        <th class="display">Value</th>
+                                                                        <th></th>
+
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr ng-repeat="formList in personalDetails track by $index">
+                                                                       
+                                                                        <td>
+                                                                            <input type="text" class="form-control"  ng-model="formList.label[$index+1]" required />
+                                                                        </td>
+                                                                        <td>
+                                                                            <input type="text" class="form-control"  ng-model="formList.value[$index+1]" required />
+                                                                        </td>
+                                                                        <td> <a  ng-click="remove($index,personalDetails)" ><i class="fa fa-minus-circle" aria-hidden="true" style="margin-top: 8px;font-size: 16px"></i></a></td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                            <div class="form-group">
+                                                               
+                                                                <input type="submit"  ng-click="addNew2()" class="btn btn-primary addnew pull-right" value="Add New">
+                                                            </div>
+                                                  
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                          
+                              
+
+                                           </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                               <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-click="listSubmit()" ng-disabled="list.$invalid || !lwarn" >Save</button></a>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Delete Modal-->
+                <div class="modal fade" id="deleteModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Delete</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h3>Are you sure to delete <span>{{clickedlist.listname}}</span>????</h3>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" ng-click="deletelist()" data-dismiss="modal">Yes</button>
+                                <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Edit Modal-->
+                <div class="modal fade" id="editModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Edit</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form class="form-horizontal">
+                                        <!-- Text input-->
+                                        <div class="form-group">
+                                            <label class="col-sm-2 new control-label" for="listname">List Name</label>
+                                            <div class="col-sm-3">
+                                                <input id="listname" name="listname" ng-model="clickedlist.listName" type="text" placeholder="List Name" class="form-control input-md" required="">
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Textarea -->
+                                        <div class="form-group">
+                                            <label class="col-sm-2 new control-label" for="description">Description</label>
+                                            <div class="col-sm-3">
+                                                <textarea class="form-control" ng-model="clickedlist.description" id="description" name="description">Description</textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 new control-label" for="description"></label>
+                                                <div class="col-sm-3">
+                                                    <div class="table-responsive">
+
+                                                        <table class="table table-striped table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                  
+                                                                    <th class="display">Label</th>
+                                                                    <th class="display">Value</th>
+                                                                    <th></th>
+
+                                                                 </tr>
+                                                             </thead>
+                                                            <tbody>
+                                                      				<tr ng-repeat="label in clickedlist.label track by $index">
+                                                      					
+                                                      					
+	                                                                     <td>
+	                                                                    	
+	                                                                        <input type="text" class="form-control"   ng-model="clickedlist.label[$index]"   required />
+	                                                                     </td>
+	                                                                     <td>
+	                                                                        <input type="text" class="form-control"   ng-model="clickedlist.value[$index]"   required />
+	                                                                     </td>
+
+	                                                                    <td> 
+	                                                                       <a  ng-click="remove($index,clickedlist.label)" ><i class="fa fa-minus-circle" aria-hidden="true" style="margin-top: 8px;font-size: 16px"></i></a>
+	                                                                    </td>
+
+	                                                                    
+                                                      				</tr>
+                                                            </tbody>
+                                                     </table>
+
+                                                        <div class="form-group">
+                                                              
+                                                            <input type="submit" ng-click="addNew()" class="btn btn-primary addnew pull-right" value="Add New">
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                             <a href="" data-dismiss="modal">   <button class="btn btn-success" type="submit" ng-click="listupdateSubmit()" >Save</button></a>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                            
+           </div>
+         </div>
+  </section>            

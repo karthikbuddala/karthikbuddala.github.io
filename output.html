@@ -1,0 +1,80 @@
+<section class="panels important" style="height:2000px;">
+ <div class="col-lg-12">
+<!-- output.html -->
+
+<h3 style="color:black;margin-top:10px;">Output</h3>
+<div class="col-md-9">
+   <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="outputMessage">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">X</a>
+                                <h4>{{outputMessage}}</h4>
+   </div>
+   </div>
+
+   <form class="form-horizontal" name="output" ng-init="loadAllList()">
+
+            <div class="col-md-12"   id="exportable" >
+ 
+	<div class="table-responsive">                            
+    <table class="table"  ng-init="loadoutputData()" >
+   
+     <tbody ng-init="counters=0;loadAutoNumbers()">
+      <tr>
+      <td></td>
+     
+      <td ng-repeat="forms in outputObject"> <label class="col-md-4 control-label" for="{{forms.label}}">{{forms.label}}</label></td>
+       <td><a href="#" class="button" ng-click="createOutputRow()"><button style="color:white" class="btn btn-secondary">Add Row</button></a></td>
+
+      </tr>
+   		<!--  row printing -->
+   		<tr ng-repeat="row in outputData" >
+   	        <td>
+   	        <input type="checkbox" ng-model="row.isDelete"/> 
+   	        </td>
+   			<td ng-repeat="field in row.fields">
+   				<div class="form-group">
+   					<!-- select field -->
+   					<div class="col-md-4" ng-if="field.type == 'select'" >
+   						 <select id="{{field.name}}"  style="width:200px;"   ng-required="field.required"  class="form-control">
+		                    <option value="{{optionl.value}}" ng-repeat="optionl in getOneList(field.list).fieldsList" >{{optionl.label}}</option>
+              			 </select>
+   					</div>
+   					<!-- input field -->
+   					<div class="col-md-4"  ng-if="field.type == 'input'" ng-init="nex()">
+						
+                       	<div ng-if="field.auto == 'number'">
+                       		
+                       		<input id="{{field.name}}" style="width:200px;" value="{{uniqueNumber(field.value,field.name)}}" ng-required="{{field.required}}" type="text" class="form-control input-md">
+                       	</div>
+                       	<div ng-if="field.auto == 'default'">
+               				<input id="{{field.name}}" style="width:200px;" value="{{field.value}}"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max" type="text"  class="form-control input-md">
+                        </div>
+           			 </div>
+           			 
+         			<div class="col-md-4" ng-if="field.type == 'textarea'">
+               			<textarea id="{{field.name}}" style="width:200px;" ng-placeholder="{{field.value}}" type="text"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max"  class="form-control input-md">{{field.value}}</textarea>
+            		</div>
+   				</div>
+   			</td>
+   			<td>
+   	        <button type="submit" ng-click="removes()" style="color:white" class="btn btn-danger">Remove</button>
+   	        </td>
+   		</tr>
+    </tbody>
+  </table>
+  
+  
+  </div>
+</div>
+				
+				
+	   <div class="col-md-12" >
+			<div class="form-group pull-right">
+				<input type="hidden" ng-model="autoNames">
+				<button type="submit" style="color:white" class="btn btn-secondary" ng-click="outputSubmit()">Submit</button>
+			</div>
+				
+	   </div>
+	</form>
+
+  </div>
+  </section>

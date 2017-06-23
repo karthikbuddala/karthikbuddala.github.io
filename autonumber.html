@@ -1,0 +1,239 @@
+<section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+<h3 style="color:black;margin-top:10px;">Auto Number</h3>
+<div class="col-md-8">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11">
+                <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Auto Number</button>
+               
+                <div class="table-responsive">
+                    <table class="table table-bordered myTable" style="margin-top:5%">
+                        <tr class="text-center">
+                            <th>Index</th>
+                            <th>Name</th>
+                            <th>Prefix </th>
+                            <th>Suffix</th>
+                            <th>Number format</th>
+                            <th>Separator</th>
+                            <th>Increment by</th>
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+                        <tbody ng-init="loadAutonumber()">
+                        	<tr ng-repeat="number in prevAutonumber">
+                        		<td>{{$index+1}}</td>
+                        		<td>{{number.name}}</td>
+                        		<td>{{number.prefix}}</td>
+                        		<td>{{number.suffix}}</td>
+                        		<td>{{number.numberFormat}}</td>
+                        		<td>{{number.seprator}}</td>
+                        		<td>{{number.incrementBy}}</td>
+                        		<td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initANDelete(number)" >Delete</button></td>
+                                <td>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectcreateautonumber(number)">Edit</button>
+                                </td>
+                        	</tr>
+                        	
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal-->
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" >
+                <div class="modal-header">
+               
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Auto Number</h4>
+                     <!--  messages -->
+                     <div   ng-hide="awarn" >
+                 
+                   		 <h4 class="errmsg" ng-model="autonumberwarn">{{autonumberwarn}}</h4>
+                	</div>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal" name="thenumber" novalidate>
+                            
+ <!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.name.$invalid && !thenumber.name.$pristine }">
+  <label class="col-md-2 control-label" for="name">Name</label>  
+  <div class="col-md-3">
+  <input id="name" name="name" type="text" ng-blur="checkAutonumberName()" ng-model="createautonumber.name" ng-minlength="1" ng-maxlength="8" placeholder="Name" class="form-control input-md" required="">
+    <p ng-show="thenumber.name.$error.minlength" class="help-block">Name is too short.</p>
+    <p ng-show="thenumber.name.$error.maxlength" class="help-block">Name is too long.</p>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.prefix.$invalid && !thenumber.prefix.$pristine }">
+  <label class="col-md-2 control-label" for="prefix">Prefix</label>  
+  <div class="col-md-3">
+  <input id="prefix" name="prefix" type="text" ng-model="createautonumber.prefix" ng-minlength="1" ng-maxlength="8" placeholder="Prefix" class="form-control input-md" required="">
+   <p ng-show="thenumber.prefix.$error.minlength" class="help-block">Prefix is too short.</p>
+   <p ng-show="thenumber.prefix.$error.maxlength" class="help-block">Prefix is too long.</p> 
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.suffix.$invalid && !thenumber.suffix.$pristine }">
+  <label class="col-md-2 control-label" for="suffix">Suffix</label>  
+  <div class="col-md-3">
+  <input id="suffix" name="suffix" type="text" ng-model="createautonumber.suffix" ng-minlength="1" ng-maxlength="8" placeholder="Suffix" class="form-control input-md" required="">
+    <p ng-show="thenumber.suffix.$error.minlength" class="help-block">Suffix is too short.</p>
+    <p ng-show="thenumber.suffix.$error.maxlength" class="help-block">Suffix is too long.</p>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.numberFormat.$invalid && !thenumber.numberFormat.$pristine }">
+  <label class="col-md-2 control-label" for="numberFormat">Number Format</label>  
+  <div class="col-md-3">
+  <input id="numberFormat" name="numberFormat" ng-model="createautonumber.numberFormat" ng-minlength="1" ng-maxlength="8" type="text" placeholder="Number Format" class="form-control input-md" required="">
+   <p ng-show="thenumber.numberFormat.$error.minlength" class="help-block">Number Format is too short.</p>
+   <p ng-show="thenumber.numberFormat.$error.maxlength" class="help-block">Number Format is too long.</p> 
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.seprator.$invalid && !thenumber.seprator.$pristine }">
+  <label class="col-md-2 control-label" for="seprator">Separator</label>  
+  <div class="col-md-3">
+  <input id="seprator" name="seprator" ng-model="createautonumber.seprator" type="text" ng-minlength="1" ng-maxlength="8" placeholder="Separator" class="form-control input-md" required="">
+    <p ng-show="thenumber.seprator.$error.minlength" class="help-block">Separator is too short.</p>
+    <p ng-show="thenumber.seprator.$error.maxlength" class="help-block">Separator is too long.</p>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber.incrementBy.$invalid && !thenumber.incrementBy.$pristine }">
+  <label class="col-md-2 control-label" for="incrementBy">Increment By</label>  
+  <div class="col-md-3">
+  <input id="incrementBy" name="incrementBy" ng-model="createautonumber.incrementBy" type="text" ng-minlength="1" ng-maxlength="8" placeholder="Increment By" class="form-control input-md" required="">
+    <p ng-show="thenumber.incrementBy.$error.minlength" class="help-block">Increment By is too short.</p>
+    <p ng-show="thenumber.incrementBy.$error.maxlength" class="help-block">Increment By is too long.</p>
+  </div>
+</div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-disabled="thenumber.$invalid || !uwarn" ng-click="autonumberSubmit(thenumber.$valid)"  >Save</button></a> 
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <form class="form-horizontal" name="thenumber1" novalidate>
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.name.$invalid && !thenumber1.name.$pristine }">
+  <label class="col-md-2 control-label" for="name">Name</label>  
+  <div class="col-md-3">
+  <input id="name" name="name" type="text" readonly ng-model="clickedcreateautonumber.name" ng-minlength="1" ng-maxlength="8" placeholder="Name" class="form-control input-md" required="">
+  <p ng-show="thenumber1.name.$error.minlength" class="help-block">Name is too short.</p>
+  <p ng-show="thenumber1.name.$error.maxlength" class="help-block">Name is too long.</p>  
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.prefix.$invalid && !thenumber1.prefix.$pristine }">
+  <label class="col-md-2 control-label" for="prefix">Prefix</label>  
+  <div class="col-md-3">
+  <input id="prefix" name="prefix" type="text" ng-model="clickedcreateautonumber.prefix" ng-minlength="1" ng-maxlength="8" placeholder="Prefix" class="form-control input-md" required="">
+  <p ng-show="thenumber1.prefix.$error.minlength" class="help-block">Prefix is too short.</p>
+  <p ng-show="thenumber1.prefix.$error.maxlength" class="help-block">Prefix is too long.</p>  
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.suffix.$invalid && !thenumber1.suffix.$pristine }">
+  <label class="col-md-2 control-label" for="suffix">Suffix</label>  
+  <div class="col-md-3">
+  <input id="suffix" name="suffix" type="text" ng-model="clickedcreateautonumber.suffix" ng-minlength="1" ng-maxlength="8" placeholder="Suffix" class="form-control input-md" required="">
+    <p ng-show="thenumber1.suffix.$error.minlength" class="help-block">Suffix is too short.</p>
+    <p ng-show="thenumber1.suffix.$error.maxlength" class="help-block">Suffix is too long.</p>
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.numberFormat.$invalid && !thenumber1.numberFormat.$pristine }">
+  <label class="col-md-2 control-label" for="numberFormat">Number Format</label>  
+  <div class="col-md-3">
+  <input id="numberFormat" name="numberFormat" ng-model="clickedcreateautonumber.numberFormat" ng-minlength="1" ng-maxlength="8"  type="text" placeholder="Number Format" class="form-control input-md" required="">
+   <p ng-show="thenumber1.numberFormat.$error.minlength" class="help-block">Number Format is too short.</p>
+   <p ng-show="thenumber1.numberFormat.$error.maxlength" class="help-block">Number Format is too long.</p> 
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.separator.$invalid && !thenumber1.separator.$pristine }">
+  <label class="col-md-2 control-label" for="separator">Separator</label>  
+  <div class="col-md-3">
+  <input id="separator" name="separator" type="text" ng-model="clickedcreateautonumber.seprator" placeholder="Separator" ng-minlength="1" ng-maxlength="8" class="form-control input-md" required="">
+   <p ng-show="thenumber1.separator.$error.minlength" class="help-block">Separator is too short.</p>
+   <p ng-show="thenumber1.separator.$error.maxlength" class="help-block">Separator is too long.</p> 
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="form-group" ng-class="{ 'has-error' : thenumber1.department.$invalid && !thenumber.department.$pristine }">
+  <label class="col-md-2 control-label" for="incrementBy">Increment By</label>  
+  <div class="col-md-3">
+  <input id="incrementBy" name="incrementBy" type="text" ng-model="clickedcreateautonumber.incrementBy" placeholder="Increment By" ng-minlength="1" ng-maxlength="8" class="form-control input-md" required="">
+   <p ng-show="thenumber1.department.$error.minlength" class="help-block">Increment By is too short.</p>
+   <p ng-show="thenumber1.department.$error.maxlength" class="help-block">Increment By is too long.</p> 
+  </div>
+</div>
+                        
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal">  <button class="btn btn-success" type="submit" ng-disabled="thenumber1.$invalid" ng-click="autonumberupdateSubmit(thenumber1.$valid)" >Save</button> </a>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+              
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="submit" ng-click="deleteAutonumber()" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+  </div>
+  </section>

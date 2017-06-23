@@ -1,0 +1,241 @@
+<section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+<h3 style="color:black;margin-top:10px;">Datasource</h3>
+            <div class="col-md-8">
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-11" >
+                            <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Add Datasource</button>
+                            <div class="alert alert-warning fade in myAlert" ng-if="datasourceMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{datasourceMessage}}</h4>
+                            </div>
+                            <div class="alert alert-danger fade in myAlert" ng-if="datasourceDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{datasourceDangerMessage}}</h4>
+                            </div>
+                             <div class="alert alert-warning fade in myAlert" ng-if="datasourceupdateMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{datasourceupdateMessage}}</h4>
+                            </div>
+                            <div class="alert alert-danger fade in myAlert" ng-if="datasourceupdateDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{datasourceupdateDangerMessage}}</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered myTable" style="margin-top:4%">
+                                    <tr class="text-center">
+                                        <th>Index</th>
+                                        <th>Data Source Name</th>
+                                        <th>Data Source Type</th>
+                                        <th>Description</th>
+                                        <th>Sequence</th>
+                                        <th>User Name</th>
+                                        <th></th>
+                                        <th></th>
+
+                                    </tr>
+                                    <tbody ng-init="loadData()">
+                                        <tr ng-repeat="datasource in prevData">
+                                            <td>{{$index+1}}</td>
+                                            <td>{{datasource.dataSourceName}}</td>
+                                            <td>{{datasource.type}}</td>
+                                            <td>{{datasource.description}}</td>
+                                            <td>{{datasource.sequence}}</td>
+                                            <td>
+                                            	<div ng-repeat="username in datasource.userName" >
+                                            		{{username}} <span ng-if="datasource.userName.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletes(datasource)">Delete</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectUser(datasource)">Edit</button>
+                                            </td>
+
+                                        </tr>
+                                         <tr ng-repeat="user in users">
+                                            <td>{{$index+1+prevData.length}}</td>
+                                            <td>{{user.dataSourceName}}</td>
+                                            <td>{{user.type}}</td>
+                                            <td>{{user.description}}</td>
+                                            <td>{{user.sequence}}</td>
+                                         
+                                                <td>
+                                            	<div ng-repeat="username1 in user.userName" >
+                                            		{{username1}} <span ng-if="user.userName.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletes(user)">Delete</button>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectUser(user)">Edit</button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Modal-->
+                <div class="modal fade" id="addModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Add Datasource</h4>
+                                    <div   ng-hide="dwarn" >
+                 							<h4 class="errmsg">{{datawarn}}</h4>
+                					</div>	
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form class="form-horizontal" name="data">
+                                        <div class="form-group" ng-class="{ 'has-error' : data.datasourcename.$invalid && !data.datasourcename.$pristine }">
+                                            <label class="control-label new col-sm-2" for="datasourcename">Data Source Name</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" name="datasourcename" required="required" ng-minlength="3" ng-maxlength="100" placeholder="Enter Data Source Name" ng-blur="checkDataSource()" ng-model="formDatasource.dataSourceName" />
+                                                <p ng-show="data.datasourcename.$error.minlength" class="help-block">Data Source Name is too short.</p>
+                                                <p ng-show="data.datasourcename.$error.maxlength" class="help-block">Data Source Name is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data.datasourcetype.$invalid && !data.datasourcetype.$pristine }">
+                                            <label class="control-label new col-sm-2" for="datasourcetype">	Data Source Type</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" name="datasourcetype" required="required" ng-minlength="3" ng-maxlength="100" placeholder="Enter Data Source Type" ng-model="formDatasource.type" />
+                                                 <p ng-show="data.datasourcetype.$error.minlength" class="help-block">Data Source Type is too short.</p>
+                                                <p ng-show="data.datasourcetype.$error.maxlength" class="help-block">Data Source Type is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data.description.$invalid && !data.description.$pristine }">
+                                            <label class="control-label new col-sm-2" for="description">Description</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" name="description" required="required" ng-minlength="3" ng-maxlength="150" placeholder="Enter Description" ng-model="formDatasource.description" />
+                                                 <p ng-show="data.description.$error.minlength" class="help-block">Description is too short.</p>
+                                                <p ng-show="data.description.$error.maxlength" class="help-block">Description is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data.sequence.$invalid && !data.sequence.$pristine }">
+                                            <label class="control-label new col-sm-2" for="sequence">Sequence</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="number" name="sequence" required="required" ng-minlength="1" ng-maxlength="7" placeholder="Enter Sequence" ng-model="formDatasource.sequence" />
+                                                <p ng-show="data.sequence.$error.minlength" class="help-block">Sequence is too short.</p>
+                                                <p ng-show="data.sequence.$error.maxlength" class="help-block">Sequence is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-init="loadUser()">
+                                            <label class="control-label new col-sm-2" for="username">User Name</label>
+                                            <div class="col-sm-3">
+                                                <select id="username" name="username" required="required"  ng-model="formDatasource.userName" class="form-control">
+                                                	  <option value="" disabled selected hidden>select</option>
+                                                      <option value="{{user.userName}}" ng-repeat="user in prevUsers">{{user.userName}}</option>
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="" data-dismiss="modal"><button class="btn btn-success" type="submit" ng-click="formSubmit(data.$valid)" ng-disabled="data.$invalid || !dwarn" >Save</button></a>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Edit Modal-->
+                <div class="modal fade" id="editModal" role="dialog" ng-init="loadUser()">
+                    <div class="modal-dialog">
+
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Edit</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form class="form-horizontal" name="data1">
+                                        <div class="form-group" ng-class="{ 'has-error' : data1.datasourcename.$invalid && !data1.datasourcename.$pristine }">
+                                            <label class="control-label new col-sm-2" for="datasourcename">Data Source Name</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" readonly name="datasourcename" required="required" ng-minlength="3" ng-maxlength="8" placeholder="Enter Data Source Name" ng-model="clickedUser.dataSourceName" />
+                                                <p ng-show="data1.datasourcename.$error.minlength" class="help-block">Data Source Name is too short.</p>
+                                                <p ng-show="data1.datasourcename.$error.maxlength" class="help-block">Data Source Name is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data1.datasourcetype.$invalid && !data1.datasourcetype.$pristine }">
+                                            <label class="control-label new col-sm-2" for="datasourcetype">	Data Source Type</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" name="datasourcetype" required="required" ng-minlength="3" ng-maxlength="8" placeholder="Enter Data Source Type" ng-model="clickedUser.type" />
+                                                <p ng-show="data1.datasourcetype.$error.minlength" class="help-block">Data Source Type is too short.</p>
+                                                <p ng-show="data1.datasourcetype.$error.maxlength" class="help-block">Data Source Type is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data1.description.$invalid && !data1.description.$pristine }">
+                                            <label class="control-label new col-sm-2" for="description">Description</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="text" placeholder="Enter Description" name="description" required="required" ng-minlength="3" ng-maxlength="150" ng-model="clickedUser.description" />
+                                                <p ng-show="data1.description.$error.minlength" class="help-block">Description is too short.</p>
+                                                <p ng-show="data1.description.$error.maxlength" class="help-block">Description is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-class="{ 'has-error' : data1.sequence.$invalid && !data1.sequence.$pristine }">
+                                            <label class="control-label new col-sm-2" for="sequence">Sequence</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control" type="number" placeholder="Enter Sequence" name="sequence" required="required" ng-minlength="1" ng-maxlength="7" ng-model="clickedUser.sequence" />
+                                                 <p ng-show="data1.sequence.$error.minlength" class="help-block">Sequence is too short.</p>
+                                                <p ng-show="data1.sequence.$error.maxlength" class="help-block">Sequence is too long.</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" >
+                                            <label class="control-label new col-sm-2" for="username">User Name</label>
+                                            <div class="col-sm-3">
+                                                 <select id="username" name="username" required="required"   ng-model="clickedUser.userName"    class="form-control">
+                                                	<option value="" disabled selected hidden>select</option>
+                                                	
+                                                   	<option value="{{user.userName}}" ng-repeat="user in prevUsers"  ng-selected="user.userName == clickedUser.userName[0]" >{{user.userName}} </option>
+                                                	 
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                               <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-click="formupdateSubmit()" ng-disabled="data1.$invalid" >Save</button></a>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <!-- Delete Modal-->
+                <div class="modal fade" id="deleteModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Delete</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h3>Are you sure to delete <span>{{clickedUser.datasourcename}}</span>????</h3>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" ng-click="deletedatasource()" data-dismiss="modal">Yes</button>
+                                <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+</div>
+  </section>

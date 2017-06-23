@@ -1,0 +1,56 @@
+<section class="panels important" style="height:2000px;">
+ <div class="col-lg-12">
+<h3 style="color:black;margin-top:10px;">Export</h3>
+<!-- outputview -->
+
+            <div class="col-md-8">
+            <td><button style="color:white" class="btn btn-secondary pull-right" ng-click="exportData()">Export</button></td>
+                <div class="container">
+                    <div class="row">
+                      <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="formfieldsMessage">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{formfieldsMessage}}</h4>
+                            </div>
+                            
+                        <div class="col-md-7">
+                            
+                          
+                            
+                            
+                            <div class="table-responsive" ng-init="showOutput(userLogged)">
+                            <div id="exportable">
+                                <table class="table table-bordered myTable" style="margin-top:5%">
+                                    <tr class="text-center">
+                               
+                                        <th ng-repeat="label in outputViewData.labels"> <label class="col-md-4 control-label" for="{{label}}">{{label}}</label></th>
+
+                                    </tr>
+                                    <tbody >
+                               
+                               				<tr ng-repeat="ta in outputViewData[outputViewData.labels[0]] track by $index" ng-init="cou = $index">
+                               
+                               <!--
+                                          <tr ng-repeat="row in outputData">
+                                          <td ng-repeat="field in row.fields">{{field.name}}</td>
+                               
+                                            <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletess(form)">Delete</button></td>
+                                            <td>
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectForm(form)">Edit</button>
+                                            </td>
+                                            
+                                            -->
+                                            	<td ng-repeat="label in outputViewData.labels">
+                                            		{{outputViewData[label][cou]}}
+                                            	</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+             </div>
+  </div>
+  </section>

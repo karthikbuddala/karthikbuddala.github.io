@@ -1,0 +1,182 @@
+<section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+ <h3 style="color:black;margin-top:10px;">Item</h3>
+<div class="col-md-8">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-11">
+                <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Add Item</button>
+               
+                <div class="table-responsive" ng-init="loadoutputData()">
+                    <table class="table table-bordered myTable" style="margin-top:5%">
+                        <tr class="text-center">
+                            <th>Index</th>
+                            <th ng-repeat="forms in outputObject"> <label class="col-md-4 control-label" for="{{forms.label}}">{{forms.label}}</label></th>
+                        
+                            <th></th>
+                            <th></th>
+
+
+                        </tr>
+                        <tbody >
+                        	<tr>
+                        		<td>{{$index+1}}</td>
+                        	    <td></td>
+                        	    <td></td>
+                        		<td> <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initANDelete(number)" >Delete</button></td>
+                                <td>
+                                    <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectcreateautonumber(number)">Edit</button>
+                                </td>
+                        	</tr>
+                        	
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Modal-->
+    <div class="modal fade" id="addModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content" >
+                <div class="modal-header">
+               
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Item</h4>
+                     <!--  messages -->
+                     <div   ng-hide="awarn" >
+                 
+                   		 <h4 class="errmsg" ng-model="autonumberwarn">{{autonumberwarn}}</h4>
+                	</div>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+   <form class="form-horizontal" name="output" ng-init="loadAllList()">
+
+  <div class="col-md-12">
+ 
+	<div class="table-responsive" >                            
+    <table class="table" border=0 width=1000 cellspacing="0" cellpadding="0" ng-init="loadItemData()" style="width:500px;border-collapse:collapse;">
+   
+     <tbody  ng-init="counters=0;loadAutoNumbers()">
+     
+     
+     <tr>
+     <td style="padding: 5px;line-height: 1.42857143;vertical-align: top;border-top:none;"><label class="control-label" style="text-align:left;" for="itemname">Item Name</label></td>
+   		<td style="padding: 5px;line-height: 1.42857143;vertical-align: top;border-top:none;">
+   		
+   		<div class="form-group" >
+   					<!-- select field -->
+   					<div class="col-md-4"  >
+   						<input id="Itemname" style="width:200px;"  ng-required="" type="text" class="form-control input-md">
+   					</div>
+   		</div>
+   		
+   		
+   		</td>
+     
+     </tr>
+   		<!--  row printing -->
+   		<tr ng-repeat="row in itemData" >
+   		
+   		<div >
+   	        <td style="padding: 5px;line-height: 1.42857143;vertical-align: top;border-top:none;"><div  ng-repeat="field in row.fields"> <label class="control-label"  style="text-align:left;" for="{{field.label}">{{field.label}}</label></div></td>
+   			<td style="padding: 5px;line-height: 1.42857143;vertical-align: top;border-top:none;">
+   				<div class="form-group" ng-repeat="field in row.fields">
+   					<!-- select field -->
+   					<div class="col-md-4" ng-if="field.type == 'select'" >
+   						 <select id="{{field.name}}"  style="width:200px;"   ng-required="field.required"  class="form-control">
+		                    <option value="{{optionl.value}}" ng-repeat="optionl in getOneList(field.list).fieldsList" >{{optionl.label}}</option>
+              			 </select>
+   					</div>
+   					<!-- input field -->
+   					<div class="col-md-4"  ng-if="field.type == 'input'" ng-init="nex()">
+						
+                       	<div ng-if="field.auto == 'number'">
+                       		
+                       		<input id="{{field.name}}" style="width:200px;"  ng-required="{{field.required}}" type="text" class="form-control input-md">
+                       	</div>
+                       	<div ng-if="field.auto == 'default'">
+               				<input id="{{field.name}}" style="width:200px;" value="{{field.value}}"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max" type="text"  class="form-control input-md">
+                        </div>
+           			 </div>
+           			 
+         			<div class="col-md-4" ng-if="field.type == 'textarea'">
+               			<textarea id="{{field.name}}" style="width:200px;" ng-placeholder="{{field.value}}" type="text"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max"  class="form-control input-md">{{field.value}}</textarea>
+            		</div>
+   				</div>
+   			</td>
+   		</div>	
+   		</tr>
+    </tbody>
+  </table>
+  
+  
+  </div>
+</div>
+				
+				
+	   <div class="col-md-12" >
+			<div class="form-group pull-right">
+				<input type="hidden" ng-model="autoNames">
+				<button type="submit" style="color:white" class="btn btn-secondary" ng-click="outputSubmit()">Submit</button>
+	   </div>
+				
+	   </div>
+	</form>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-disabled="thenumber.$invalid || !uwarn" ng-click="autonumberSubmit(thenumber.$valid)"  >Save</button></a> 
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal-->
+    <div class="modal fade" id="editModal" role="dialog">
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Edit</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <a href="" data-dismiss="modal">  <button class="btn btn-success" type="submit" ng-disabled="thenumber1.$invalid" ng-click="autonumberupdateSubmit(thenumber1.$valid)" >Save</button> </a>
+                    <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+
+    <!-- Delete Modal-->
+    <div class="modal fade" id="deleteModal" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" type="button" data-dismiss="modal">x</button>
+                    <h4 class="modal-title">Delete</h4>
+                </div>
+              
+                <div class="modal-footer">
+                    <button class="btn btn-danger" type="submit" ng-click="deleteAutonumber()" data-dismiss="modal">Yes</button>
+                    <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+  </div>
+  </section>

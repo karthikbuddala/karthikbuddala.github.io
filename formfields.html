@@ -1,0 +1,474 @@
+<section class="panels important" style="height:1000px;">
+ <div class="col-lg-12">
+ <h3 style="color:black;margin-top:10px;">Form-fields</h3>
+            <div class="col-md-8">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <button class="btn btn-info pull-right" data-toggle="modal" data-target="#addModal">Add Form-fields</button>
+                            <div class="alert alert-warning fade in myAlert" style="margin-top:5%" ng-if="formfieldsMessage">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{formfieldsMessage}}</h4>
+                            </div>
+                             <div class="alert alert-danger fade in myAlert" ng-if="formfieldsDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{formfieldsDangerMessage}}</h4>
+                            </div>
+                             <div class="alert alert-warning fade in myAlert" ng-if="formfieldsupdateMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{formfieldsupdateMessage}}</h4>
+                            </div>
+                            <div class="alert alert-danger fade in myAlert" ng-if="formfieldsupdateDangerMessage" style="margin-top:5%">
+                                <a class="close" href="#" data-dismiss="alert" ng-click="clickedAlert()">×</a>
+                                <h4>{{formfieldsupdateDangerMessage}}</h4>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered myTable" style="margin-top:5%">
+                                    <tr class="text-center" style="white-space: nowrap">
+                                        <th>Index</th>
+                                        <th>Datasource Name</th>
+                                        <th>Datasource Type</th>
+                                        <th>Label</th>
+                                        <th>Type</th>
+                                        <th>Default value/Placeholder</th>
+                                         <th>Auto Number</th>
+                                        
+                                        <th>List</th>
+                                        <th>Min Value</th>
+                                        <th>Max Value</th>
+                                        <th>Required</th>
+                                        <th>Sequence</th>
+                                        <th></th>
+                                        <th></th>
+
+                                    </tr>
+                                    <tbody ng-init="loadField()">
+                                        <tr ng-repeat="forms in prevField">
+                                            <td>{{$index+1}}</td>
+                                            
+                                            <td>
+                                            <div ng-repeat="datanames in forms.dataSourceName" >
+                                            		{{datanames}} <span ng-if="forms.dataSourceName.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                            </td>
+                                          
+                                            <td>
+                                            	<div ng-repeat="dataname1 in forms.dataSourceType" >
+                                            		{{dataname1}} <span ng-if="forms.dataSourceType.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                            </td>
+                                            <td>{{forms.label}}</td>
+                                            <td>{{forms.type}}</td>
+                                            <td>{{forms.value}} <div ng-if="forms.value == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{forms.auto}} <div ng-if="forms.auto == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{forms.list}} <div ng-if="forms.list == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{forms.minValue}} <div ng-if="forms.minValue == null" style="text-align:center;" ><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{forms.maxValue}} <div ng-if="forms.maxValue == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div> </td>
+                                            <td>{{forms.required}}</td>
+                                            <td>{{forms.sequence}}</td>
+                                            <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletess(forms)">Delete</button></td>
+                                            <td>
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectForm(forms)">Edit</button>
+                                            </td>
+
+                                        </tr>
+                                          <tr ng-repeat="form in forms">
+                                             <td>{{$index+1+prevField.length}}</td>
+                                             <td>
+                                                <div ng-repeat="dataname in form.dataSourceName" >
+                                            		{{dataname}} <span ng-if="form.dataSourceName.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                             </td>
+                                           
+                                            <td>
+                                            	<div ng-repeat="dataname2 in form.dataSourceType" >
+                                            		{{dataname2}} <span ng-if="form.dataSourceType.length-1 != $index" style="color:black;">,</span>
+                                            	</div>
+                                            </td>
+                                            <td>{{form.label}}</td>
+                                            <td>{{form.type}}</td>
+                                            <td>{{form.value}} <div ng-if="form.value == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{form.auto}} <div ng-if="form.auto == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{form.list}} <div ng-if="form.list == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            
+                                            <td>{{form.minValue}} <div ng-if="form.minValue == null" style="text-align:center;" ><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{form.maxValue}} <div ng-if="form.maxValue == null" style="text-align:center;"><i class="fa fa-times"  aria-hidden="true"></i></div></td>
+                                            <td>{{form.required}}</td>
+                                            <td>{{form.sequence}}</td>
+                                            <td><button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" ng-click="initDeletess(form)">Delete</button></td>
+                                            <td>
+                                                <button class="btn btn-warning" data-toggle="modal" data-target="#editModal" ng-click="selectForm(form)">Edit</button>
+                                            </td>
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Modal-->
+                <div class="modal fade" id="addModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">×</button>
+                                <h4 class="modal-title">Add Form-fields</h4>
+                                <!-- warn messages -->
+                                <div  ng-hide="fwarn" >
+                 							<h4 class="errmsg">{{formwarn}}</h4>
+                				</div>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <form class="form-horizontal" name="form">
+                                        <div class="form-group" ng-class="{ 'has-error' : form.datasourcename.$invalid && !form.datasourcename.$pristine }">
+                                            <label class="control-label new col-sm-2" for="datasourcename">Data Source Name</label>
+                                            <div class="col-sm-3">
+                                                  <select id="datasourcename" name="datasourcename" required="required"   ng-model="formFields.dataSourceName" class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                    <option value="{{datasource.dataSourceName}}" style="color:black;" ng-repeat="datasource in prevDataname">{{datasource.dataSourceName}}</option>
+                                               
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- 
+                                        <div class="form-group" ng-class="{ 'has-error' : form.datasourcetype.$invalid && !form.datasourcetype.$pristine }">
+                                            
+                                            <label class="col-sm-2 new control-label" for="datasourcetype">Datasource Type</label>
+                                            
+                                            <div class="col-sm-3">
+                                       			
+                                                <select id="datasourcetype" name="datasourcetype" required="required"   ng-model="formFields.dataSourceType" class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                    <option value="parent" >Parent</option>
+                                                    <option value="child" >Child</option>
+                                               
+                                                </select>
+												 
+												 
+                                            </div>
+                                        </div>
+                                         -->
+                                         <input type="hidden" ng-model="formFields.dataSourceType = 'child'">
+
+                                        <!-- Text input-->
+                                        <div class="form-group" ng-class="{ 'has-error' : form.label.$invalid && !form.label.$pristine }">
+                                            <label class="col-sm-2 new control-label" for="label">Label</label>
+                                            <div class="col-sm-3">
+                                                <input id="label" name="label" type="text" required="required" ng-minlength="1" ng-maxlength="25" placeholder="Label" ng-model="formFields.label" class="form-control input-md" required="">
+                                                 <p ng-show="form.label.$error.minlength" class="help-block">Label is too short.</p>
+                                                <p ng-show="form.label.$error.maxlength" class="help-block">Label is too long.</p>
+
+                                            </div>
+                                        </div>
+
+                                        <!-- Select Basic -->
+                                        <div class="form-group">
+                                            <label class="col-sm-2 new control-label" for="type">Type</label>
+                                            <div class="col-sm-3">
+                                                <select id="type" name="type" required="required" ng-change="changeFormSelection(formFields)"  ng-model="formFields.type" class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                    <option value="input">Input</option>
+                                                    <option value="select">Select</option>
+                                                    <option value="textarea">Textarea</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-if="formFields.type == 'input'">
+											  <label class="col-md-2 control-label" for="autonumber">Auto Number</label>
+											  <div class="col-md-3">
+											    <select id="autonumber" name="autonumber" ng-model="formFields.auto" class="form-control">
+											    <option value="" disabled selected hidden>Choose Option</option>
+											      <option value="default">Default value</option>
+											      <option value="number">Number Format</option>
+											    </select>
+											  </div>
+									 </div>
+									 <!-- Text input-->
+									<!-- Text input-->
+												<div class="form-group" ng-if="formFields.auto == 'number'">
+												  <label class="col-md-2 control-label" for="numberformat">Number Format</label>  
+												  <div class="col-md-3" ng-init="loadAutonumber()">
+												  
+												     <select id="numberFormat" name="numberFormat"  ng-model="formFields.value" required="required"    class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                     <option value="{{number.name}}" ng-repeat="number in prevAutonumber">{{number.name}}</option>
+                                                  
+                                                </select>
+												  </div>
+												</div>									
+                                       <div class="form-group" ng-if="formFields.type == 'select'">
+                                            <label class="col-sm-2 new control-label" for="list">List</label>
+                                            <div class="col-sm-3" ng-init="loadList()">
+                                                <select id="list" name="list" required="required"   ng-model="formFields.list" class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                     <option value="{{list.listName}}" ng-repeat="list in prevList">{{list.listName}}</option>
+                                                  
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!-- Text input-->
+                                        <div class="form-group" ng-if="formFields.auto == 'default'" ng-class="{ 'has-error' : form.defaultvalue.$invalid && !form.defaultvalue.$pristine }">
+                                            <label class="col-sm-2 new control-label" for="defaultvalue">Default value/Placeholder</label>
+                                            <div class="col-sm-3">
+                                                <input id="value" name="value"  ng-minlength="1" ng-maxlength="25" ng-model="formFields.value" type="text" placeholder="Default value/ Placeholder" class="form-control input-md" >
+                                                <p ng-show="form.defaultvalue.$error.minlength"  class="help-block">Default value/Placeholder is too short.</p>
+                                                <p ng-show="form.defaultvalue.$error.maxlength" class="help-block">Default value/Placeholder Type is too long.</p>
+                                                
+
+                                            </div>
+                                        </div>
+                                        <div class="blue" ng-hide="formFields.auto=='number'">
+                                            <!-- Text input-->
+                                            <div class="form-group" ng-hide="formFields.type=='select'" ng-class="{ 'has-error' : form.minvalue.$invalid && !form.minvalue.$pristine }">
+                                                <label class="col-sm-2 new control-label" for="minvalue">Min Value</label>
+                                                <div class="col-sm-3">
+                                                    <input id="minvalue" name="minvalue"  ng-minlength="1" ng-maxlength="4" type="text" ng-model="formFields.minValue" placeholder="Min Value" class="form-control input-md" >
+                                                    <p ng-show="form.minvalue.$error.minlength" class="help-block">Min Value is too short.</p>
+                                                <p ng-show="form.minvalue.$error.maxlength" class="help-block">Min Value is too long.</p>
+
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="form-group" ng-hide="formFields.type=='select'" ng-class="{ 'has-error' : form.maxvalue.$invalid && !form.maxvalue.$pristine }">
+                                                <label class="col-sm-2 new control-label" for="maxvalue">Max Value</label>
+                                                <div class="col-sm-3">
+                                                    <input id="maxvalue" name="maxvalue" type="text"  ng-minlength="1" ng-maxlength="4" ng-model="formFields.maxValue" placeholder="Max Value" class="form-control input-md" >
+                                                     <p ng-show="form.maxvalue.$error.minlength" class="help-block">Max Value is too short.</p>
+                                                     <p ng-show="form.maxvalue.$error.maxlength" class="help-block">Max Value is too long.</p>
+
+                                                </div>
+                                            </div>
+                                            <div class="form-group" ng-hide="formFields.type=='select'" ng-class="{ 'has-error' : form.pattern.$invalid && !form.pattern.$pristine }">
+                                                <label class="col-sm-2 new control-label" for="pattern">Pattern</label>  
+                                                <div class="col-sm-3">
+                                             <input id="pattern" name="pattern" type="text"  placeholder="Pattern" ng-model="formFields.pattern" class="form-control input-md" >
+                                          
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- Multiple Checkboxes (inline) -->
+                                        <div class="form-group" >
+                                            <label class="col-sm-2 new control-label" for="required">Required</label>
+                                            <div class="col-sm-3">
+                                                <label class="checkbox-inline" for="required-0"> 
+                                                    <input type="checkbox" name="required"   id="required-0" ng-model="formFields.required" value="required">
+                                                   
+                                                   required</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- Text input-->
+                                        <div class="form-group" ng-class="{ 'has-error' : form.sequence.$invalid && !form.sequence.$pristine }">
+                                            <label class="col-sm-2 new control-label" for="sequence">Sequence</label>
+                                            <div class="col-sm-3">
+                                                <input id="sequence" name="sequence"  required="required" ng-blur="checkFormSequence()" ng-minlength="1" ng-maxlength="25" type="text" placeholder="Sequence" ng-model="formFields.sequence" class="form-control input-md" required="">
+                                                 <p ng-show="form.sequence.$error.minlength" class="help-block">Sequence is too short.</p>
+                                                     <p ng-show="form.sequence.$error.maxlength" class="help-block">Sequence is too long.</p>
+
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                               <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-click="fieldSubmit()" ng-disabled="form.$invalid || !fwarn" >Save</button></a>
+                                <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Modal-->
+  <div class="modal fade" id="editModal" role="dialog">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal">×</button>
+            <h4 class="modal-title">Edit</h4>
+          </div>
+          <div class="modal-body">
+            <div class="container">
+              <form class="form-horizontal" name="form1">
+                  <div class="form-group" ng-class="{ 'has-error' : form1.datasourcename.$invalid && !form1.datasourcename.$pristine }">
+                      <label class="control-label new col-sm-2" for="datasourcename">Data Source Name</label>
+                      <div class="col-sm-3" ng-init="loadDataname()">
+                         <select id="datasourcename" name="datasourcename" required="required"   ng-model="clickedform.dataSourceName" class="form-control">
+                                                   <option value="" disabled select>Choose Option</option>
+                                                    <option value="{{datasource.dataSourceName}}" ng-repeat="datasource in prevDataname">{{datasource.dataSourceName}}</option>
+                         </select>
+                      </div>
+                  </div>
+                  <!--  
+                  <div class="form-group" ng-class="{ 'has-error' : form1.datasourcetype.$invalid && !form1.datasourcetype.$pristine }">
+                      <label class="col-sm-2 new control-label" for="datasourcetype">Datasource Type</label>
+                      <div class="col-sm-3">
+                         <select id="datasourcetype" name="datasourcetype" required="required"   ng-model="formFields.dataSourceType" class="form-control">
+                                                    <option value="" disabled select>Choose Option</option>
+                                                    <option value="parent" >Parent</option>
+                                                    <option value="child" >Child</option>
+                                               
+                         </select>
+                      </div>
+                  </div>
+					-->
+					<input type="hidden" ng-model="formFields.dataSourceType='child'" >
+					
+					
+                  <!-- Text input-->
+                  <div class="form-group" ng-class="{ 'has-error' : form1.label.$invalid && !form1.label.$pristine }">
+                      <label class="col-sm-2 new control-label" for="label">Label</label>
+                      <div class="col-sm-3">
+                          <input id="label" name="label" type="text" required="required" ng-minlength="1" ng-maxlength="25" placeholder="Label" ng-model="clickedform.label" class="form-control input-md" required="">
+                            <p ng-show="form1.defaultvalue.$error.minlength" class="help-block">Label is too short.</p>
+                            <p ng-show="form1.defaultvalue.$error.maxlength" class="help-block">Label is too long.</p>
+                      </div>
+                  </div>
+
+                  <!-- Select Basic -->
+                  <div class="form-group">
+                      <label class="col-sm-2 new control-label" for="type">Type</label>
+                      <div class="col-sm-3">
+                          <select id="type" name="type" required="required" ng-model="clickedform.type" ng-change="changeFormSelection(clickedform)"  class="form-control">
+                              <option value="" disabled selected hidden>Choose Option</option>
+                              <option value="input">Input</option>
+                              <option value="select">Select</option>
+                              <option value="textarea">Textarea</option>
+                          </select>
+                      </div>
+                  </div>
+                  
+                  <div class="form-group" ng-if="clickedform.type == 'input'">
+											  <label class="col-md-2 control-label" for="autonumber">Auto Number</label>
+											  <div class="col-md-3">
+											    <select id="autonumber" name="autonumber" ng-model="clickedform.auto" class="form-control">
+											    <option value="" disabled selected hidden>Choose Option</option>
+											      <option value="default">Default value</option>
+											      <option value="number">Number Format</option>
+											    </select>
+											  </div>
+				</div>
+                <!-- Text input-->
+	              <div class="form-group" ng-if="clickedform.auto == 'number'">
+							<label class="col-md-2 control-label" for="numberformat">Number Format</label>  
+										 <div class="col-md-3" ng-init="loadAutonumber()">
+												  
+												<select id="numberFormat" name="numberFormat"  ng-model="clickedform.value" required="required"    class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                    <option value="{{number.name}}" ng-repeat="number in prevAutonumber">{{number.name}}</option>
+                                                  
+                                                </select>
+										</div>
+					</div>	
+                   <div class="form-group" ng-if="clickedform.type == 'select'">
+                                            <label class="col-sm-2 new control-label" for="list">List</label>
+                                            <div class="col-sm-3" ng-init="loadList()">
+                                                <select id="list" name="list" required="clickedform.type == 'select'"   ng-model="clickedform.list" class="form-control">
+                                                    <option value="" disabled selected hidden>Choose Option</option>
+                                                     <option value="{{list.listName}}" ng-repeat="list in prevList">{{list.listName}}</option>
+                                                  
+                                                </select>
+                                            </div>
+                    </div>
+                    
+                  <!-- Text input-->
+                  <div class="form-group" ng-if="clickedform.auto == 'default'" ng-class="{ 'has-error' : form1.defaultvalue.$invalid && !form1.defaultvalue.$pristine }">
+                      <label class="col-sm-2 new control-label" for="defaultvalue">Default value/Placeholder</label>
+                      <div class="col-sm-3">
+                          <input id="defaultvalue" name="defaultvalue"  ng-minlength="1" ng-maxlength="25" ng-model="clickedform.value" type="text" placeholder="Default value/ Placeholder" class="form-control input-md" >
+                          <p ng-show="form1.defaultvalue.$error.minlength" class="help-block">Default value/Placeholder is too short.</p>
+                          <p ng-show="form1.defaultvalue.$error.maxlength" class="help-block">Default value/Placeholder is too long.</p>
+                      </div>
+                  </div>
+                  <div class="blue">
+                      <!-- Text input-->
+                      <div class="form-group" ng-hide="clickedform.type=='select'" ng-class="{ 'has-error' : form1.minvalue.$invalid && !form1.minvalue.$pristine }">
+                          <label class="col-sm-2 new control-label" for="minvalue">Min Value</label>
+                          <div class="col-sm-3">
+                              <input id="minvalue" name="minvalue"  ng-minlength="1" ng-maxlength="4" type="text" ng-model="clickedform.minValue" placeholder="Min Value" class="form-control input-md" >
+                               <p ng-show="form1.minvalue.$error.minlength" class="help-block">Min Value is too short.</p>
+                               <p ng-show="form1.minvalue.$error.maxlength" class="help-block">Min Value Type is too long.</p>
+                              
+                          </div>
+                      </div>
+
+                      <!-- Text input-->
+                      <div class="form-group" ng-hide="clickedform.type=='select'"  ng-class="{ 'has-error' : form1.maxvalue.$invalid && !form1.maxvalue.$pristine }">
+                          <label class="col-sm-2 new control-label" for="maxvalue">Max Value</label>
+                          <div class="col-sm-3">
+                              <input id="maxvalue" name="maxvalue" type="text"  ng-minlength="1" ng-maxlength="4" ng-model="clickedform.maxValue" placeholder="Max Value" class="form-control input-md" >
+                             <p ng-show="form1.maxvalue.$error.minlength" class="help-block">Max Value is too short.</p>
+                             <p ng-show="form1.maxvalue.$error.maxlength" class="help-block">Max Value Type is too long.</p>
+                             
+                          </div>
+                      </div>
+                       <div class="form-group" ng-hide="clickedform.type=='select'" ng-class="{ 'has-error' : form1.pattern.$invalid && !form1.pattern.$pristine }">
+                                                <label class="col-sm-2 new control-label" for="pattern">Pattern</label>  
+                                                <div class="col-sm-3">
+                                             <input id="pattern" name="pattern" type="text"  placeholder="Pattern"  ng-minlength="1" ng-maxlength="4" ng-model="clickedform.pattern" class="form-control input-md" >
+                                          <p ng-show="form1.maxvalue.$error.minlength" class="help-block">Max Value is too short.</p>
+                                          <p ng-show="form1.maxvalue.$error.maxlength" class="help-block">Max Value Type is too long.</p>
+                                            </div>
+                                          </div>
+                  </div>
+                  <!-- Multiple Checkboxes (inline) -->
+                  <div class="form-group">
+                      <label class="col-sm-2 new control-label" for="required">Required</label>
+                      <div class="col-sm-3">
+                          <label class="checkbox-inline" for="required-0">
+                              <input type="checkbox" name="required"  ng-model="clickedform.required" value="">
+                              required
+                          </label>
+                      </div>
+                  </div>
+
+                  <!-- Text input-->
+                  <div class="form-group" ng-class="{ 'has-error' : form1.sequence.$invalid && !form1.sequence.$pristine }">
+                      <label class="col-sm-2 new control-label" for="sequence">Sequence</label>
+                      <div class="col-sm-3">
+                          <input id="sequence" name="sequence" required="required" ng-minlength="1" ng-maxlength="25" type="text" placeholder="Sequence" ng-model="clickedform.sequence" class="form-control input-md" required="">
+                          <p ng-show="form1.sequence.$error.minlength" class="help-block">Sequence is too short.</p>
+                          <p ng-show="form1.sequence.$error.maxlength" class="help-block">Sequencel Type is too long.</p>
+                      </div>
+                  </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+           <a href="" data-dismiss="modal"> <button class="btn btn-success" type="submit" ng-click="fieldupdateSubmit()" ng-disabled="form1.$invalid" >Save</button></a>
+            <button class="btn btn-default" type="button" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div> 
+
+
+         <!-- Delete Modal-->
+         <div class="modal fade" id="deleteModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button class="close" type="button" data-dismiss="modal">x</button>
+                                <h4 class="modal-title">Delete</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h3>Are you sure to delete <span>{{clickedform.datasourcename}}</span>????</h3>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-danger" type="button" ng-click="deleteform()" data-dismiss="modal">Yes</button>
+                                <button class="btn btn-primary" type="button" data-dismiss="modal">No</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                            
+           </div>
+           </div>
+  </section>      

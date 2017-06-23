@@ -1,0 +1,39 @@
+<section class="panels important" style="height:2000px;">
+ <div class="col-lg-12">
+<form class="form-horizontal" name="output" ng-init="loadAllList()">
+<div class="handsontable" id="example">
+<div class="table-responsive">
+    <table class="htCore" style="width:1000px;margin-top:10px;"  ng-init="loadoutputData()">
+      <colgroup>
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+        <col style="width: 100px;">
+      </colgroup>
+
+      <thead ng-init="counters=0;loadAutoNumbers()">
+        <tr>
+          <th ng-repeat="forms in outputObject">
+            <div class="relative">
+              <span class="colHeader">{{forms.label}}</span>
+            </div>
+          </th>
+
+     
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr ng-repeat="row in outputData">
+          <td class="" ng-repeat="field in row.fields"><select id="{{field.name}}"   ng-if="field.type == 'select'"  ng-required="field.required"  ><option value="{{optionl.value}}" ng-repeat="optionl in getOneList(field.list).fieldsList" >{{optionl.label}}</option></select><div   ng-if="field.type == 'input'" ng-init="nex()"><input id="{{field.name}}"  ng-if="field.auto == 'number'" value="{{uniqueNumber(field.value,field.name)}}" ng-required="{{field.required}}" type="text" ><input id="{{field.name}}" ng-if="field.auto == 'default'"  value="{{field.value}}"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max" type="text" ></div><textarea id="{{field.name}}" ng-if="field.type == 'textarea'"  ng-placeholder="{{field.value}}" type="text"  ng-required="{{field.required}}" ng-min="field.min" ng-max="field.max"  >{{field.value}}</textarea></td>
+        </tr>  
+       
+      </tbody>
+    </table>
+    </div>
+  </div>
+</form>
+</div>
+  </section>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>DT</title>
+		<meta name="description" content="description">
+		<meta name="author" content="DevOOPS">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+  
+   <script src="js/angular.js"></script>
+    <script src="js/angular-ui-router.js"></script>
+    <script src="js/angular-modal-service.js"></script>
+    <script src="js/ui-bootstrap-tpls-1.3.3.js"></script>
+    <script src="app.js"></script>
+    <script src="js/excel.js"></script>
+    <script src="js/smart-table.min.js"></script>
+    <script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link href="css/errormsg.css" rel="stylesheet">
+    <link href="css/newdashboard.css" rel="stylesheet">
+    <link href="css/outputexcel.css" rel="stylesheet">
+
+
+
+
+	</head>
+	<style>
+
+	</style>
+	
+
+<body ng-app="mdm" ng-controller="mdmController">
+<!-- loads users  -->
+<header role="banner"  >
+<h1><img src="img/dm.jpg"></h1> 
+  <ul class="utilities">
+    <li class="users"><a href="#">My Account</a></li>
+    <li class="logout warn"><a href="logout">Log Out</a></li>
+  </ul>
+</header>
+
+<nav role="navigation" ng-init="loadLoggedUser()">
+  		<ul >
+                 <li>
+                    <a ui-sref="usercreate"><i class="fa fa-circle-o text-white"></i> User Create  </a>
+                </li>
+                <li>
+                    <a  ui-sref="datasource"><i class="fa fa-circle-o text-black"></i> Datasource</a>
+                </li>
+                <li>
+                    <a ui-sref="autonumber"><i class="fa fa-circle-o text-white"></i> AutoNumber</a>
+                </li>
+                  <li>
+                    <a ui-sref="list"><i class="fa fa-circle-o text-black"></i> List </a>
+                </li>
+                
+                <li>
+                    <a ui-sref="formfields"><i class="fa fa-circle-o text-white"></i> Form-fields</a>
+                </li>
+                <li>
+                    <a ui-sref="item"><i class="fa fa-circle-o text-white"></i> Item</a>
+                </li>
+                    
+                <li>
+                    <a ui-sref="output"><i class="fa fa-circle-o text-white"></i> Output</a>
+                </li>
+                
+                <li>
+                    <a ui-sref="outputview"><i class="fa fa-circle-o text-white"></i> Export</a>
+                </li>
+                
+    </ul>
+</nav>
+
+<main role="main">
+  
+
+                        <div ui-view>
+                        <section class="panel important" style="height:550px;">
+                           <div class="col-lg-12">
+                            <h1 class="welcome">Welcome </h1>
+                            <h3 class="to">to</h3>
+                            <h2 class="to">DataMigration Tool</h2>
+                          </div>
+                        </section>
+                        </div>
+           
+
+               
+
+
+</main>
+<footer role="contentinfo">DATAMIGRATION TOOL</footer>
+</body>
+</html>

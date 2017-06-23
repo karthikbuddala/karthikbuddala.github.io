@@ -1,0 +1,42 @@
+<div>
+<table st-table="displayedCollection" st-safe-src="rowCollection" class="table table-striped">
+    <thead>
+    <tr>
+        <th>Scheduler Type</th>
+        <th>Cron Expression</th>
+        <th>Table Name</th>
+        <th>Last Scheduled Time</th>
+        <th>Status</th>
+        <th>Next FetchStartTime</th>
+        <th>Next FetchEndTime</th>
+        <th>Edit</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="row in displayedCollection">
+        <td>{{row.schedulerType}}</td>
+        <td>{{row.cronexpression}}</td>
+        <td>{{row.tableName}}</td>
+        <td>{{row.lastScheduledTime}}</td>
+        <td>{{row.status}}</td>
+        <td>{{row.nextFetchStartTime}}</td>
+        <td>{{row.nextFetchEndTime}}</td>
+        <td>
+            <button type="button" ng-click="openPopUp(row.originalData,row.id)" class="btn btn-sm">
+                <i class="glyphicon glyphicon-pencil">
+                </i>
+            </button>
+        </td>
+
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="8" class="text-center">
+            <div st-pagination="" st-items-by-page="10"></div>
+        </td>
+    </tr>
+    </tfoot>
+</table>
+</div>
+

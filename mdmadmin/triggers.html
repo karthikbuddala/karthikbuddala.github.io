@@ -1,0 +1,11 @@
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-heading">Triggers</div>
+        <div class="panel-body" ng-controller="triggerController">
+            <div ng-repeat="row in triggersList ">
+                <card-component title="{{row.title}}" description="{{row.description}}" action="{{row.title}}" path="{{row.path}}" ></card-component>
+            </div>
+       </div>
+    </div>
+</div>
+
